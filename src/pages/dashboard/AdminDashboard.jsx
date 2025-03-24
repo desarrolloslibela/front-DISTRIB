@@ -2,12 +2,7 @@ import Navbar from "../../components/Navbar";
 
 const AdminDashboard = () => {
   return (
-    <div>
-
-<Navbar>
-  <p>Texto</p>
-</Navbar>
-    
+    <div>   
     
     <div className="container">
       <div className="card p-4 shadow-lg">
