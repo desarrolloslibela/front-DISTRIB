@@ -1,28 +1,52 @@
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import navbarItems from "../utils/navbarItems";
 import { getRoleTitle } from "../utils/roles";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
-
   const role = user?.role?.toLowerCase();
   const items = navbarItems[role] || [];
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <div className="d-flex align-items-center">
-        <span className="navbar-brand text-light me-3">{getRoleTitle(user?.role)}</span>
-        {items.map((item, index) => (
-          <Link
-            key={index}
-            to={item.path}
-            className="btn btn-outline-light btn-sm me-2"
-          >
-            <i className={`bi ${item.icon}`}></i> {item.label}
-          </Link>
-        ))}
+      <div className="container-fluid">
+        <span className="navbar-brand">{getRoleTitle(user?.role)}</span>
+
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {items.map((item, index) =>
+              item.subItems ? (
+                <li key={index} className="nav-item dropdown">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i className={`bi ${item.icon}`}></i> {item.label}
+                  </span>
+                  <ul className="dropdown-menu">
+                    {item.subItems.map((sub, subIndex) => (
+                      <li key={subIndex}>
+                        <Link to={sub.path} className="dropdown-item">
+                          {sub.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={index} className="nav-item">
+                  <Link to={item.path} className="nav-link">
+                    <i className={`bi ${item.icon}`}></i> {item.label}
+                  </Link>
+                </li>
+              )
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
