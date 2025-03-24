@@ -1,68 +1,59 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
-
 import Login from "./pages/auth/Login";
 import Layout from "./components/Layout";
-import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
+
+// Admin
+import UserList from "./pages/admin/UserList";
+import NewUser from "./pages/admin/NewUser";
+
+// Driver & Owner (pueden ser placeholders por ahora)
 import DriverDashboard from "./pages/dashboard/DriverDashboard";
-
-/**
- * Protege rutas privadas, redirigiendo al login si el usuario no está autenticado.
- */
-const PrivateRoute = ({ children }) => {
-    const { user, loading } = useContext(AuthContext);
-  
-    if (loading) return <p>Cargando...</p>;    
-    if (!loading && !user) {
-      return <Login />; // Evita que Login.js se desmonte
-    }
-    
-  
-    return children;
-  };
-
-/**
- * Renderiza el Dashboard correspondiente según el rol del usuario.
- */
-const DashboardWrapper = () => {
-  const { user } = useContext(AuthContext);
-
-  if (!user) return <Navigate to="/login" />;
-
-  switch (user.role.toLowerCase()) {
-    case "owner":
-      return <OwnerDashboard />;
-    case "admin":
-      return <AdminDashboard />;
-    case "driver":
-      return <DriverDashboard />;
-    default:
-      return <Navigate to="/login" />;
-  }
-};
+import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
 
 const AppRoutes = () => {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <p>Cargando...</p>;
+
+  const role = user?.role?.toLowerCase();
+
   return (
     <Routes>
-      {/* Ruta pública de login */}
       <Route path="/login" element={<Login />} />
 
-      {/* Rutas protegidas con Layout */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <Layout>
-              <DashboardWrapper />
-            </Layout>
-          </PrivateRoute>
-        }
-      />
+      {user && (
+        <>
+          {/* Rutas para ADMIN */}
+          {role === "admin" && (
+            <Route path="/admin" element={<Layout />}>
+              <Route path="users" element={<UserList />} />
+              <Route path="users/new" element={<NewUser />} />
+            </Route>
+          )}
 
-      {/* Cualquier otra ruta redirige al login */}
-      <Route path="*" element={<Navigate to="/login" />} />
+          {/* Rutas para DRIVER */}
+          {role === "driver" && (
+            <Route path="/driver" element={<Layout />}>
+              <Route index element={<DriverDashboard />} />
+            </Route>
+          )}
+
+          {/* Rutas para OWNER */}
+          {role === "owner" && (
+            <Route path="/owner" element={<Layout />}>
+              <Route index element={<OwnerDashboard />} />
+            </Route>
+          )}
+        </>
+      )}
+
+      {/* Redirección según rol */}
+      {!user && <Route path="*" element={<Navigate to="/login" />} />}
+      {user && role === "admin" && <Route path="*" element={<Navigate to="/admin" />} />}
+      {user && role === "driver" && <Route path="*" element={<Navigate to="/driver" />} />}
+      {user && role === "owner" && <Route path="*" element={<Navigate to="/owner" />} />}
     </Routes>
   );
 };
