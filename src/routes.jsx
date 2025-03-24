@@ -4,17 +4,30 @@ import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import Layout from "./components/Layout";
 
-// Admin
-import UserList from "./pages/admin/UserList";
-import NewUser from "./pages/admin/NewUser";
+// Páginas por rol
+import OwnerInicio from "./pages/owner/Inicio";
+import AdminInicio from "./pages/admin/Inicio";
+import DriverInicio from "./pages/driver/Inicio";
 
-// Driver & Owner (pueden ser placeholders por ahora)
-import DriverDashboard from "./pages/dashboard/DriverDashboard";
-import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
+// Comunes (admin y owner)
+import Usuarios from "./pages/admin/Usuarios";
+import Productos from "./pages/products/Productos";
+import TiposProducto from "./pages/products/TiposProducto";
+import Clientes from "./pages/clientes/Clientes";
+import Proveedores from "./pages/proveedores/Proveedores";
+import ControlStock from "./pages/stock/ControlStock";
+import RemitoCompra from "./pages/remitos/RemitoCompra";
+import RemitoVenta from "./pages/remitos/RemitoVenta";
+import CostosFijos from "./pages/finanzas/CostosFijos";
+import ListaCompra from "./pages/precios/ListaCompra";
+import ListaVenta from "./pages/precios/ListaVenta";
+import Ventas from "./pages/ventas/Ventas";
+import Finanzas from "./pages/finanzas/Finanzas";
+import Automotores from "./pages/automotores/Automotores";
+import Compras from "./pages/compras/Compras";
 
 const AppRoutes = () => {
   const { user, loading } = useContext(AuthContext);
-
   if (loading) return <p>Cargando...</p>;
 
   const role = user?.role?.toLowerCase();
@@ -24,36 +37,63 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
 
       {user && (
-        <>
-          {/* Rutas para ADMIN */}
-          {role === "admin" && (
-            <Route path="/admin" element={<Layout />}>
-              <Route path="users" element={<UserList />} />
-              <Route path="users/new" element={<NewUser />} />
-            </Route>
-          )}
-
-          {/* Rutas para DRIVER */}
-          {role === "driver" && (
-            <Route path="/driver" element={<Layout />}>
-              <Route index element={<DriverDashboard />} />
-            </Route>
-          )}
-
-          {/* Rutas para OWNER */}
+        <Route path="/" element={<Layout />}>
+          {/* OWNER */}
           {role === "owner" && (
-            <Route path="/owner" element={<Layout />}>
-              <Route index element={<OwnerDashboard />} />
-            </Route>
+            <>
+              <Route path="owner" element={<OwnerInicio />} />
+              <Route path="admin/users" element={<Usuarios />} />
+              <Route path="products" element={<Productos />} />
+              <Route path="products/types" element={<TiposProducto />} />
+              <Route path="clients" element={<Clientes />} />
+              <Route path="suppliers" element={<Proveedores />} />
+              <Route path="vehicles" element={<Automotores />} />
+              <Route path="purchases" element={<Compras />} />
+              <Route path="stock/control" element={<ControlStock />} />
+              <Route path="remitos/compra" element={<RemitoCompra />} />
+              <Route path="remitos/venta" element={<RemitoVenta />} />
+              <Route path="fixed-costs" element={<CostosFijos />} />
+              <Route path="prices/purchase" element={<ListaCompra />} />
+              <Route path="prices/sale" element={<ListaVenta />} />
+              <Route path="sales" element={<Ventas />} />
+              <Route path="finanzas" element={<Finanzas />} />
+            </>
           )}
-        </>
+
+          {/* ADMIN */}
+          {role === "admin" && (
+            <>
+              <Route path="admin" element={<AdminInicio />} />
+              <Route path="admin/users" element={<Usuarios />} />
+              <Route path="products" element={<Productos />} />
+              <Route path="products/types" element={<TiposProducto />} />
+              <Route path="clients" element={<Clientes />} />
+              <Route path="suppliers" element={<Proveedores />} />
+              <Route path="vehicles" element={<Automotores />} />
+              <Route path="purchases" element={<Compras />} />
+              <Route path="stock/control" element={<ControlStock />} />
+              <Route path="fixed-costs" element={<CostosFijos />} />
+              <Route path="prices/purchase" element={<ListaCompra />} />
+              <Route path="prices/sale" element={<ListaVenta />} />
+            </>
+          )}
+
+          {/* DRIVER */}
+          {role === "driver" && (
+            <>
+              <Route path="driver" element={<DriverInicio />} />
+              <Route path="remitos/compra" element={<RemitoCompra />} />
+              <Route path="remitos/venta" element={<RemitoVenta />} />
+              <Route path="sales" element={<Ventas />} />
+            </>
+          )}
+        </Route>
       )}
 
-      {/* Redirección según rol */}
       {!user && <Route path="*" element={<Navigate to="/login" />} />}
+      {user && role === "owner" && <Route path="*" element={<Navigate to="/owner" />} />}
       {user && role === "admin" && <Route path="*" element={<Navigate to="/admin" />} />}
       {user && role === "driver" && <Route path="*" element={<Navigate to="/driver" />} />}
-      {user && role === "owner" && <Route path="*" element={<Navigate to="/owner" />} />}
     </Routes>
   );
 };

@@ -12,7 +12,6 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
       <div className="container-fluid">
-        <span className="navbar-brand">{getRoleTitle(user?.role)}</span>
         <ul className="navbar-nav me-auto">
           {items.map((item, index) =>
             item.subItems ? (
