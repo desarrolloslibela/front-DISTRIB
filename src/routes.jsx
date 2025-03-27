@@ -4,27 +4,31 @@ import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import Layout from "./components/Layout";
 
-// Páginas por rol
+// Páginas comunes por rol
 import OwnerInicio from "./pages/owner/Inicio";
 import AdminInicio from "./pages/admin/Inicio";
 import DriverInicio from "./pages/driver/Inicio";
 
-// Comunes (admin y owner)
+// Gestión del sistema
 import Usuarios from "./pages/admin/Usuarios";
 import Productos from "./pages/products/Productos";
 import TiposProducto from "./pages/products/TiposProducto";
 import Clientes from "./pages/clientes/Clientes";
 import Proveedores from "./pages/proveedores/Proveedores";
+import Automotores from "./pages/automotores/Automotores";
+import Compras from "./pages/compras/Compras";
+
+// Stock y remitos
 import ControlStock from "./pages/stock/ControlStock";
 import RemitoCompra from "./pages/remitos/RemitoCompra";
 import RemitoVenta from "./pages/remitos/RemitoVenta";
+
+// Finanzas y precios
 import CostosFijos from "./pages/finanzas/CostosFijos";
 import ListaCompra from "./pages/precios/ListaCompra";
 import ListaVenta from "./pages/precios/ListaVenta";
 import Ventas from "./pages/ventas/Ventas";
 import Finanzas from "./pages/finanzas/Finanzas";
-import Automotores from "./pages/automotores/Automotores";
-import Compras from "./pages/compras/Compras";
 
 const AppRoutes = () => {
   const { user, loading } = useContext(AuthContext);
