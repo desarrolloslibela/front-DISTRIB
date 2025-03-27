@@ -4,12 +4,12 @@ import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import Layout from "./components/Layout";
 
-// Páginas comunes por rol
+// Páginas por rol
 import OwnerInicio from "./pages/owner/Inicio";
 import AdminInicio from "./pages/admin/Inicio";
 import DriverInicio from "./pages/driver/Inicio";
 
-// Gestión del sistema
+// Gestión
 import Usuarios from "./pages/admin/Usuarios";
 import Productos from "./pages/products/Productos";
 import TiposProducto from "./pages/products/TiposProducto";
@@ -23,7 +23,7 @@ import ControlStock from "./pages/stock/ControlStock";
 import RemitoCompra from "./pages/remitos/RemitoCompra";
 import RemitoVenta from "./pages/remitos/RemitoVenta";
 
-// Finanzas y precios
+// Finanzas
 import CostosFijos from "./pages/finanzas/CostosFijos";
 import ListaCompra from "./pages/precios/ListaCompra";
 import ListaVenta from "./pages/precios/ListaVenta";
@@ -42,7 +42,6 @@ const AppRoutes = () => {
 
       {user && (
         <Route path="/" element={<Layout />}>
-          {/* OWNER */}
           {role === "owner" && (
             <>
               <Route path="owner" element={<OwnerInicio />} />
@@ -64,7 +63,6 @@ const AppRoutes = () => {
             </>
           )}
 
-          {/* ADMIN */}
           {role === "admin" && (
             <>
               <Route path="admin" element={<AdminInicio />} />
@@ -82,7 +80,6 @@ const AppRoutes = () => {
             </>
           )}
 
-          {/* DRIVER */}
           {role === "driver" && (
             <>
               <Route path="driver" element={<DriverInicio />} />

@@ -5,6 +5,8 @@ import TipoProductoTable from "../../components/productos/TipoProductoTable";
 
 const TiposProducto = () => {
   const [tipos, setTipos] = useState([]);
+  const [filteredTipos, setFilteredTipos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -12,6 +14,7 @@ const TiposProducto = () => {
     try {
       const data = await getAllTiposProducto();
       setTipos(data);
+      setFilteredTipos(data);
     } catch (error) {
       alert("Error al cargar los tipos de producto");
     }
@@ -20,6 +23,13 @@ const TiposProducto = () => {
   useEffect(() => {
     cargarTipos();
   }, []);
+
+  useEffect(() => {
+    const filtrados = tipos.filter((t) =>
+      t.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredTipos(filtrados);
+  }, [searchTerm, tipos]);
 
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro que deseas eliminar este tipo de producto?")) {
@@ -51,7 +61,16 @@ const TiposProducto = () => {
           <i className="bi bi-plus-circle"></i> Nuevo Tipo
         </button>
       </div>
-      <TipoProductoTable data={tipos} onEdit={handleEdit} onDelete={handleDelete} />
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por nombre..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <TipoProductoTable data={filteredTipos} onEdit={handleEdit} onDelete={handleDelete} />
       {showForm && (
         <TipoProductoForm
           tipo={selected}
