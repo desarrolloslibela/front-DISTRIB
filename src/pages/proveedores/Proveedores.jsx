@@ -42,6 +42,11 @@ const Proveedores = () => {
     }
   };
 
+  const handleEdit = (proveedor) => {
+    setSelected(proveedor);
+    setShowForm(true);
+  };
+
   const handleFormSuccess = () => {
     setShowForm(false);
     setSelected(null);
@@ -70,7 +75,12 @@ const Proveedores = () => {
 
       <FiltroPanel fields={fieldConfig} values={filters} onChange={setFilters} />
 
-      <ProveedorTable data={proveedores} onEdit={setSelected} onDelete={handleDelete} />
+      <ProveedorTable
+        data={proveedores}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
       {showForm && (
         <ProveedorForm
           proveedor={selected}
