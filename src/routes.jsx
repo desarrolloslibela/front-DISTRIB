@@ -25,8 +25,8 @@ import RemitoVenta from "./pages/remitos/RemitoVenta";
 
 // Finanzas
 import CostosFijos from "./pages/finanzas/CostosFijos";
-import ListaCompra from "./pages/precios/ListaCompra";
-import ListaVenta from "./pages/precios/ListaVenta";
+import ListaPreciosCompra from "./pages/listas/ListaPreciosCompra";
+import ListaPreciosVenta from "./pages/listas/ListaPreciosVenta";
 import Ventas from "./pages/ventas/Ventas";
 import Finanzas from "./pages/finanzas/Finanzas";
 
@@ -56,8 +56,8 @@ const AppRoutes = () => {
               <Route path="remitos/compra" element={<RemitoCompra />} />
               <Route path="remitos/venta" element={<RemitoVenta />} />
               <Route path="fixed-costs" element={<CostosFijos />} />
-              <Route path="prices/purchase" element={<ListaCompra />} />
-              <Route path="prices/sale" element={<ListaVenta />} />
+              <Route path="prices/purchase" element={<ListaPreciosCompra />} />
+              <Route path="prices/sale" element={<ListaPreciosVenta />} />
               <Route path="sales" element={<Ventas />} />
               <Route path="finanzas" element={<Finanzas />} />
             </>
@@ -75,8 +75,8 @@ const AppRoutes = () => {
               <Route path="purchases" element={<Compras />} />
               <Route path="stock/control" element={<ControlStock />} />
               <Route path="fixed-costs" element={<CostosFijos />} />
-              <Route path="prices/purchase" element={<ListaCompra />} />
-              <Route path="prices/sale" element={<ListaVenta />} />
+              <Route path="prices/purchase" element={<ListaPreciosCompra />} />
+              <Route path="prices/sale" element={<ListaPreciosVenta />} />
             </>
           )}
 
