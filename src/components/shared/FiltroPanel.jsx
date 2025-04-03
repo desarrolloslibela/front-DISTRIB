@@ -11,24 +11,18 @@ const FiltroPanel = ({ fields, values, onChange }) => {
     onChange((prev) => ({ ...prev, [name]: date }));
   };
 
-  const fechaFields = Object.entries(fields).filter(
-    ([_, config]) => typeof config === "object" && config.type === "date"
-  );
-  const otherFields = Object.entries(fields).filter(
-    ([_, config]) => !(typeof config === "object" && config.type === "date")
-  );
-
   return (
     <div className="p-3 mb-3 border bg-light rounded">
       <div className="row">
-        {otherFields.map(([field, config]) => {
+        {Object.entries(fields).map(([field, config]) => {
           const label = typeof config === "string" ? config : config.label;
           const type = typeof config === "object" ? config.type : "text";
           const options = config.options || [];
 
           return (
-            <div className="col-md-4 mb-2" key={field}>
+            <div className="col-md-4 mb-2 d-flex flex-column" key={field}>
               <label className="form-label">{label}</label>
+
               {type === "text" && (
                 <input
                   className="form-control"
@@ -37,6 +31,7 @@ const FiltroPanel = ({ fields, values, onChange }) => {
                   onChange={handleChange}
                 />
               )}
+
               {type === "select" && (
                 <select
                   className="form-select"
@@ -44,34 +39,31 @@ const FiltroPanel = ({ fields, values, onChange }) => {
                   value={values[field]}
                   onChange={handleChange}
                 >
-                  {options.map((opt, idx) => (
-                    <option key={idx} value={opt}>
-                      {opt === "" ? "Todos" : opt === "true" ? "Activos" : "Inactivos"}
-                    </option>
-                  ))}
+                  {options.map((opt, idx) => {
+                    if (typeof opt === "object") {
+                      return <option key={idx} value={opt.value}>{opt.label}</option>;
+                    }
+                    return (
+                      <option key={idx} value={opt}>
+                        {opt === "" ? "Todos" : opt === "true" ? "Activos" : "Inactivos"}
+                      </option>
+                    );
+                  })}
                 </select>
+              )}
+
+              {type === "date" && (
+                <DatePicker
+                  selected={values[field]}
+                  onChange={(date) => handleDateChange(field, date)}
+                  className="form-control"
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText={label}
+                />
               )}
             </div>
           );
         })}
-        {fechaFields.length > 0 && (
-          <div className="col-12">
-            <div className="row g-2">
-              {fechaFields.map(([field, config]) => (
-                <div className="col-md-6 mb-2 d-flex flex-column" key={field}>
-                  <label className="form-label mb-1">{config.label}</label>
-                  <DatePicker
-                    selected={values[field]}
-                    onChange={(date) => handleDateChange(field, date)}
-                    className="form-control"
-                    dateFormat="yyyy-MM-dd"
-                    placeholderText={config.label}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

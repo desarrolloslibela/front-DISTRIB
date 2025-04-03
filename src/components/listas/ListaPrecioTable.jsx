@@ -1,6 +1,4 @@
-const ListaPrecioTable = ({ data, tipo }) => {
-  const listas = tipo ? data.filter((l) => l.tipo === tipo) : data;
-
+const ListaPrecioTable = ({ data }) => {
   return (
     <table className="table table-bordered table-striped">
       <thead className="table-light">
@@ -13,7 +11,7 @@ const ListaPrecioTable = ({ data, tipo }) => {
         </tr>
       </thead>
       <tbody>
-        {listas.map((l) => (
+        {data.map((l) => (
           <tr key={l.id}>
             <td>{l.tipo}</td>
             <td>{l.fechaDesde}</td>

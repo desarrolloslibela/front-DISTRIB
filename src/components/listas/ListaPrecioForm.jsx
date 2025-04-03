@@ -55,7 +55,13 @@ const ListaPrecioForm = ({ tipo, proveedores = [], onClose, onSuccess }) => {
             {tipo === "COMPRA" && (
               <div className="mb-3">
                 <label className="form-label">Proveedor</label>
-                <select className="form-select" name="proveedorId" onChange={handleChange} required>
+                <select
+                  className="form-select"
+                  name="proveedorId"
+                  value={form.proveedorId}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">Seleccione</option>
                   {proveedores.map((p) => (
                     <option key={p.id} value={p.id}>{p.razonSocial}</option>
@@ -65,15 +71,15 @@ const ListaPrecioForm = ({ tipo, proveedores = [], onClose, onSuccess }) => {
             )}
             <div className="mb-3">
               <label className="form-label">Fecha Desde</label>
-              <input type="date" name="fechaDesde" className="form-control" onChange={handleChange} required />
+              <input type="date" name="fechaDesde" className="form-control" value={form.fechaDesde} onChange={handleChange} required />
             </div>
             <div className="mb-3">
               <label className="form-label">Fecha Hasta</label>
-              <input type="date" name="fechaHasta" className="form-control" onChange={handleChange} />
+              <input type="date" name="fechaHasta" className="form-control" value={form.fechaHasta} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label">Observaciones</label>
-              <textarea name="observaciones" className="form-control" onChange={handleChange}></textarea>
+              <textarea name="observaciones" className="form-control" value={form.observaciones} onChange={handleChange}></textarea>
             </div>
           </div>
           <div className="modal-footer">

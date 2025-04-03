@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getListasPrecio } from "../../utils/api/listaPrecioApi";
+import { getListasPrecioFiltrado } from "../../utils/api/listaPrecioApi";
 import ListaPrecioForm from "../../components/listas/ListaPrecioForm";
 import ListaPrecioTable from "../../components/listas/ListaPrecioTable";
 import FiltroPanel from "../../components/shared/FiltroPanel";
@@ -8,15 +8,20 @@ const ListaPreciosVenta = () => {
   const [listas, setListas] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [filters, setFilters] = useState({
-    fechaDesde: null,
-    fechaHasta: null
+    desde: null,
+    hasta: null
   });
 
   const cargarListas = async () => {
-    const params = { tipo: "VENTA" };
-    if (filters.fechaDesde) params.fechaDesde = filters.fechaDesde.toISOString().split("T")[0];
-    if (filters.fechaHasta) params.fechaHasta = filters.fechaHasta.toISOString().split("T")[0];
-    const data = await getListasPrecio(params);
+    if (!filters.desde || !filters.hasta) return;
+
+    const params = {
+      tipo: "VENTA",
+      desde: filters.desde.toISOString().split("T")[0],
+      hasta: filters.hasta.toISOString().split("T")[0]
+    };
+
+    const data = await getListasPrecioFiltrado(params);
     setListas(data);
   };
 
@@ -35,8 +40,8 @@ const ListaPreciosVenta = () => {
 
       <FiltroPanel
         fields={{
-          fechaDesde: { label: "Fecha Desde", type: "date" },
-          fechaHasta: { label: "Fecha Hasta", type: "date" }
+          desde: { label: "Desde", type: "date" },
+          hasta: { label: "Hasta", type: "date" }
         }}
         values={filters}
         onChange={setFilters}

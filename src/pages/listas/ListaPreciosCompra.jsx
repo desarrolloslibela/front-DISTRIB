@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getListasPrecio } from "../../utils/api/listaPrecioApi";
+import { getListasPrecioFiltrado, getListasPrecioPorTipo } from "../../utils/api/listaPrecioApi";
 import { getProveedores } from "../../utils/api/proveedorApi";
 import ListaPrecioForm from "../../components/listas/ListaPrecioForm";
 import ListaPrecioTable from "../../components/listas/ListaPrecioTable";
@@ -11,16 +11,26 @@ const ListaPreciosCompra = () => {
   const [showForm, setShowForm] = useState(false);
   const [filters, setFilters] = useState({
     proveedorId: "",
-    fechaDesde: null,
-    fechaHasta: null
+    desde: null,
+    hasta: null
   });
+  const [appliedFilters, setAppliedFilters] = useState(null);
 
   const cargarListas = async () => {
-    const params = { tipo: "COMPRA" };
-    if (filters.fechaDesde) params.fechaDesde = filters.fechaDesde.toISOString().split("T")[0];
-    if (filters.fechaHasta) params.fechaHasta = filters.fechaHasta.toISOString().split("T")[0];
-    if (filters.proveedorId) params.proveedorId = filters.proveedorId;
-    const data = await getListasPrecio(params);
+    let data;
+
+    if (appliedFilters) {
+      const params = { tipo: "COMPRA", ...appliedFilters };
+
+      if (params.desde) params.desde = params.desde.toISOString().split("T")[0];
+      if (params.hasta) params.hasta = params.hasta.toISOString().split("T")[0];
+      if (!params.proveedorId) delete params.proveedorId;
+
+      data = await getListasPrecioFiltrado(params);
+    } else {
+      data = await getListasPrecioPorTipo("COMPRA");
+    }
+
     setListas(data);
   };
 
@@ -30,12 +40,21 @@ const ListaPreciosCompra = () => {
   };
 
   useEffect(() => {
+    cargarProveedores();
     cargarListas();
-  }, [filters]);
+  }, []);
 
   useEffect(() => {
-    cargarProveedores();
-  }, []);
+    if (appliedFilters) cargarListas();
+  }, [appliedFilters]);
+
+  const aplicarFiltro = () => {
+    if (!filters.desde || !filters.hasta || !filters.proveedorId) {
+      alert("Debes completar los tres campos para aplicar el filtro.");
+      return;
+    }
+    setAppliedFilters(filters);
+  };
 
   return (
     <div className="card p-4">
@@ -53,12 +72,18 @@ const ListaPreciosCompra = () => {
             type: "select",
             options: [{ value: "", label: "Todos" }, ...proveedores.map(p => ({ value: p.id, label: p.razonSocial }))]
           },
-          fechaDesde: { label: "Fecha Desde", type: "date" },
-          fechaHasta: { label: "Fecha Hasta", type: "date" }
+          desde: { label: "Desde", type: "date" },
+          hasta: { label: "Hasta", type: "date" }
         }}
         values={filters}
         onChange={setFilters}
       />
+
+      <div className="text-end">
+        <button className="btn btn-outline-primary" onClick={aplicarFiltro}>
+          <i className="bi bi-funnel"></i> Aplicar Filtro
+        </button>
+      </div>
 
       <ListaPrecioTable data={listas} />
 
