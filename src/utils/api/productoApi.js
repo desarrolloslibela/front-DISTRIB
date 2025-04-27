@@ -5,6 +5,17 @@ export const getProductos = async (params) => {
   return res.data;
 };
 
+export const getProductosActivos = async () => {
+  const res = await api.get("/productos", {
+    params: {
+      activo: true,
+      page: 0,
+      size: 1000,
+    },
+  });
+  return res.data.content || [];
+};
+
 export const createProducto = async (data) => {
   const res = await api.post("/productos", data);
   return res.data;
