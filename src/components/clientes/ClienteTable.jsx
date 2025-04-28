@@ -1,4 +1,4 @@
-const ClienteTable = ({ data, onEdit, onDelete }) => {
+const ClienteTable = ({ data, onEdit, onDelete, onViewMovements }) => {
   const exportToCSV = () => {
     const header = ["Razón Social", "CUIT", "Email", "Teléfono", "Dirección", "Activo", "Fecha Alta"];
     const rows = data.map((c) => [
@@ -60,6 +60,9 @@ const ClienteTable = ({ data, onEdit, onDelete }) => {
               </td>
               <td>{c.fechaAlta?.split("T")[0]}</td>
               <td className="text-center">
+                <button className="btn btn-sm btn-info me-2" onClick={() => onViewMovements(c)}>
+                  <i className="bi bi-box-seam"></i> Movimientos
+                </button>
                 <button className="btn btn-sm btn-warning me-2" onClick={() => onEdit(c)}>
                   <i className="bi bi-pencil"></i>
                 </button>

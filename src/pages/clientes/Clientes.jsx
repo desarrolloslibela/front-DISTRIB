@@ -3,6 +3,7 @@ import { getClientes, deleteCliente } from "../../utils/api/clientApi";
 import ClienteForm from "../../components/clientes/ClienteForm";
 import ClienteTable from "../../components/clientes/ClienteTable";
 import FiltroPanel from "../../components/shared/FiltroPanel";
+import { useNavigate } from "react-router-dom"; 
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -53,6 +54,13 @@ const Clientes = () => {
     cargarClientes();
   };
 
+  const navigate = useNavigate();
+
+  const handleViewMovements = (cliente) => {
+    navigate(`/clients/${cliente.id}/movements`);
+  };
+  
+
   const fieldConfig = {
     razonSocial: "Por Razón Social",
     cuit: "Por CUIT",
@@ -79,6 +87,7 @@ const Clientes = () => {
         data={clientes}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onViewMovements={handleViewMovements}
       />
 
       {showForm && (

@@ -17,6 +17,7 @@ import Clientes from "./pages/clientes/Clientes";
 import Proveedores from "./pages/proveedores/Proveedores";
 import Automotores from "./pages/automotores/Automotores";
 import Compras from "./pages/compras/Compras";
+import ClienteMovements from "./pages/clientes/ClienteMovements";
 
 // Stock y remitos
 import ControlStock from "./pages/stock/ControlStock";
@@ -49,6 +50,7 @@ const AppRoutes = () => {
               <Route path="products" element={<Productos />} />
               <Route path="products/types" element={<TiposProducto />} />
               <Route path="clients" element={<Clientes />} />
+              <Route path="clients/:id/movements" element={<ClienteMovements />} />
               <Route path="suppliers" element={<Proveedores />} />
               <Route path="vehicles" element={<Automotores />} />
               <Route path="purchases" element={<Compras />} />
@@ -70,6 +72,7 @@ const AppRoutes = () => {
               <Route path="products" element={<Productos />} />
               <Route path="products/types" element={<TiposProducto />} />
               <Route path="clients" element={<Clientes />} />
+              <Route path="clients/:id/movements" element={<ClienteMovements />} />
               <Route path="suppliers" element={<Proveedores />} />
               <Route path="vehicles" element={<Automotores />} />
               <Route path="purchases" element={<Compras />} />
