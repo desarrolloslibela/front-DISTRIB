@@ -15,6 +15,13 @@ const API_ROUTES = {
     GET_BY_ID: (id) => `/vehicles/${id}`,
     UPDATE: (id) => `/vehicles/${id}/update`,
   },
+  CLIENTS: {
+    GET_ALL: "/clientes",
+    GET_BY_ID: (id) => `/clientes/${id}`,
+    CREATE: "/clientes",
+    UPDATE: (id) => `/clientes/${id}`,
+    DELETE: (id) => `/clientes/${id}`,
+  },
 };
 
 export default API_ROUTES;
