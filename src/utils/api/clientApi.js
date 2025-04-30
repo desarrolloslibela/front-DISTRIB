@@ -1,5 +1,5 @@
-import api from '../axiosConfig'; 
-import API_ROUTES from '../apiRoutes';
+import api from "../axiosConfig";
+import API_ROUTES from "../apiRoutes";
 
 export const getClientes = async (params) => {
   const response = await api.get(API_ROUTES.CLIENTS.GET_ALL, { params });
@@ -18,5 +18,10 @@ export const updateCliente = async (id, data) => {
 
 export const deleteCliente = async (id) => {
   const response = await api.delete(API_ROUTES.CLIENTS.DELETE(id));
+  return response.data;
+};
+
+export const getClientePorId = async (id) => {
+  const response = await api.get(API_ROUTES.CLIENTS.GET_BY_ID(id));
   return response.data;
 };
